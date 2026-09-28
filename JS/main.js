@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         text.split('').forEach((char) => {
             const span = document.createElement('span');
-            
+
             if (char === ' ') {
                 span.innerHTML = '&nbsp;';
             } else {
@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 span.classList.add('glitch-char');
                 letterSpans.push(span);
             }
-            
+
             glitchTitle.appendChild(span);
         });
     }
@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (currentStep < totalLetters) {
                 const targetIndex = indices[currentStep];
                 const targetSpan = letterSpans[targetIndex];
-                
+
                 targetSpan.classList.remove('flickering');
                 targetSpan.classList.add('fixed');
 
@@ -79,9 +79,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 setTimeout(() => {
                     letterSpans.forEach((span, idx) => {
                         setTimeout(() => {
-                            // Al recibir el chispazo de luz, la letra cambia al verde definitivo
                             span.classList.add('sweep-light', 'green-final');
-                        }, idx * 20); // Barrido continuo de 20ms por letra
+
+                            // Libera la letra de la animación del rayo para que responda al hover
+                            setTimeout(() => {
+                                span.classList.remove('sweep-light');
+                            }, 300);
+
+                        }, idx * 20);
                     });
                 }, 150);
             }
@@ -90,6 +95,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 3. INICIO AUTOMÁTICO TRAS LA ENTRADA DEL LOGO (1.2s)
     setTimeout(() => {
+        if (logoBtn) {
+            logoBtn.classList.remove('animate__animated', 'animate__backInDown');
+        }
+
         reproducirAnimacionLogo();
         iniciarSecuenciaTexto();
     }, 1200);
@@ -98,7 +107,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (logoBtn) {
         logoBtn.addEventListener('click', () => {
             reproducirAnimacionLogo();
-            iniciarSecuenciaTexto();
         });
     }
 });

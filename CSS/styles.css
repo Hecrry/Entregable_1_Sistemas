@@ -45,7 +45,7 @@ body {
 }
 
 .glitch-title {
-    font-size: 2.1rem;
+    font-size: 3.5rem;
     font-weight: 700;
     letter-spacing: -0.5px;
     display: inline-block;
@@ -58,6 +58,8 @@ body {
     text-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
     opacity: 0;
 }
+
+
 
 /* PARPADEO BRUSCO MIENTRAS SE CONGELA EN BLANCO */
 .glitch-char.flickering {
@@ -76,6 +78,18 @@ body {
 .glitch-char.green-final {
     color: #00ff88 !important;
     text-shadow: 0 0 14px rgba(0, 255, 136, 0.9) !important;
+    transition: color 0.2s ease, text-shadow 0.2s ease, transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), margin 0.25s ease;
+    cursor: default;
+    display: inline-block;
+    margin: 0 1px; /* Margen base */
+}
+
+/* EFECTO AL PASAR EL CURSOR SOBRE CADA LETRA: Vuelve a blanco resplandeciente */
+.glitch-char.green-final:hover {
+    color: #ffffff !important;
+    text-shadow: 0 0 18px #ffffff, 0 0 30px #00ff88 !important;
+    transform: translateY(-4px) scale(1.35) !important; /* Se agranda un poco más */
+    margin: 0 6px; /* Empuja suavemente a las letras contiguas hacia los lados */
 }
 
 /* ANIMACIÓN DEL BARRIDO DE LUZ */
@@ -104,8 +118,11 @@ body {
     justify-content: center;
     align-items: center;
     box-shadow: 0 12px 35px rgba(0, 0, 0, 0.8);
-    transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), border-color 0.3s ease, box-shadow 0.3s ease;
     --animate-duration: 1.2s;
+    
+    /* CURVA CON REBOTE AL VENIR HACIA EL FRENTE */
+    animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
 }
 
 .btn-logo video {
@@ -114,10 +131,12 @@ body {
     object-fit: cover;
     display: block;
     border-radius: 50%;
+    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
+/* EFECTO AL PASAR EL PUNTERO SOBRE EL LOGO */
 .btn-logo:hover {
-    transform: scale(1.05);
+    transform: scale(1.08); /* Se agranda de forma suave */
     border-color: #00ff88;
     box-shadow: 0 0 35px rgba(0, 255, 136, 0.6);
 }
