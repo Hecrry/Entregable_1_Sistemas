@@ -1,112 +1,127 @@
 document.addEventListener('DOMContentLoaded', () => {
     const logoBtn = document.getElementById('logoBtn');
     const logoVideo = document.getElementById('logoVideo');
-    const textWrapper = document.getElementById('textWrapper');
     const glitchTitle = document.getElementById('glitchTitle');
+    const navbar = document.getElementById('navbar');
 
-    let letterSpans = [];
-
-    // 1. FRAGMENTAR EL TEXTO EN SPANS
-    if (glitchTitle) {
-        const text = glitchTitle.textContent;
-        glitchTitle.innerHTML = '';
-
-        text.split('').forEach((char) => {
-            const span = document.createElement('span');
-
-            if (char === ' ') {
-                span.innerHTML = '&nbsp;';
-            } else {
-                span.textContent = char;
-                span.classList.add('glitch-char');
-                letterSpans.push(span);
-            }
-
-            glitchTitle.appendChild(span);
-        });
-    }
+    const textoOriginal = "Programa de Ingeniería de Sistemas";
+    const caracteresGlitch = "!@#$%^&*()_+-=[]{}|;:,.<>?/0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
     function reproducirAnimacionLogo() {
-        if (!logoVideo) return;
-        logoVideo.currentTime = 0;
-        logoVideo.play();
-    }
-
-    if (logoVideo) {
-        logoVideo.addEventListener('ended', () => {
+        if (logoVideo) {
             logoVideo.currentTime = 0;
-            logoVideo.pause();
-        });
+            logoVideo.play().catch(() => {});
+        }
     }
 
-    // 2. SECUENCIA DE FIJACIÓN EN BLANCO Y BARRIDO VERDE
     function iniciarSecuenciaTexto() {
-        if (!textWrapper || letterSpans.length === 0) return;
+        if (!glitchTitle) return;
+        glitchTitle.innerHTML = '';
 
-        textWrapper.classList.remove('hidden');
+        const spans = [];
+        for (let i = 0; i < textoOriginal.length; i++) {
+            const span = document.createElement('span');
+            span.classList.add('glitch-char');
+            span.innerHTML = textoOriginal[i] === ' ' ? '&nbsp;' : caracteresGlitch[Math.floor(Math.random() * caracteresGlitch.length)];
+            glitchTitle.appendChild(span);
+            spans.push(span);
+        }
 
-        // Reinicia letras a blanco e inicia parpadeo
-        letterSpans.forEach(span => {
-            span.classList.remove('fixed', 'sweep-light', 'green-final');
-            span.classList.add('flickering');
-            const randomDelay = (Math.random() * 0.3).toFixed(2);
-            span.style.animationDelay = `${randomDelay}s`;
-        });
+        let iteraciones = 0;
+        const maxIteraciones = 5;
 
-        // Orden aleatorio para ir congelando las letras en blanco
-        let indices = letterSpans.map((_, index) => index);
-        indices.sort(() => Math.random() - 0.5);
+        const intervalGlitch = setInterval(() => {
+            spans.forEach((span, idx) => {
+                if (textoOriginal[idx] !== ' ') {
+                    span.textContent = caracteresGlitch[Math.floor(Math.random() * caracteresGlitch.length)];
+                }
+            });
 
-        const totalLetters = indices.length;
-        const totalDuration = 3200; // ~3.2s para congelar en blanco
-        const intervalTime = totalDuration / totalLetters;
-
-        let currentStep = 0;
-
-        const interval = setInterval(() => {
-            if (currentStep < totalLetters) {
-                const targetIndex = indices[currentStep];
-                const targetSpan = letterSpans[targetIndex];
-
-                targetSpan.classList.remove('flickering');
-                targetSpan.classList.add('fixed');
-
-                currentStep++;
-            } else {
-                clearInterval(interval);
-
-                // BARRIDO DE LUZ DE IZQUIERDA A DERECHA QUE TRANSFORMA TODO A VERDE
-                setTimeout(() => {
-                    letterSpans.forEach((span, idx) => {
-                        setTimeout(() => {
-                            span.classList.add('sweep-light', 'green-final');
-
-                            // Libera la letra de la animación del rayo para que responda al hover
-                            setTimeout(() => {
-                                span.classList.remove('sweep-light');
-                            }, 300);
-
-                        }, idx * 20);
-                    });
-                }, 150);
+            iteraciones++;
+            if (iteraciones >= maxIteraciones) {
+                clearInterval(intervalGlitch);
+                fijarTextoDefinitivo(spans);
             }
-        }, intervalTime);
+        }, 50);
     }
 
-    // 3. INICIO AUTOMÁTICO TRAS LA ENTRADA DEL LOGO (1.2s)
+    function fijarTextoDefinitivo(spans) {
+        const indices = Array.from(Array(textoOriginal.length).keys());
+        for (let i = indices.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [indices[i], indices[j]] = [indices[j], indices[i]];
+        }
+
+        const congeladas = new Set();
+
+        const intervalGlitchContinuo = setInterval(() => {
+            spans.forEach((span, idx) => {
+                if (!congeladas.has(idx) && textoOriginal[idx] !== ' ') {
+                    span.textContent = caracteresGlitch[Math.floor(Math.random() * caracteresGlitch.length)];
+                }
+            });
+        }, 50);
+
+        indices.forEach((idxOriginal, step) => {
+            setTimeout(() => {
+                congeladas.add(idxOriginal);
+                const span = spans[idxOriginal];
+                span.innerHTML = textoOriginal[idxOriginal] === ' ' ? '&nbsp;' : textoOriginal[idxOriginal];
+                span.classList.add('locked');
+
+                if (step === indices.length - 1) {
+                    clearInterval(intervalGlitchContinuo);
+                    lanzarRayoLuz(spans);
+                }
+            }, step * 60);
+        });
+    }
+
+    function lanzarRayoLuz(spans) {
+        spans.forEach((span, idx) => {
+            setTimeout(() => {
+                span.classList.add('sweep-light', 'green-final');
+                setTimeout(() => {
+                    span.classList.remove('sweep-light');
+                }, 300);
+            }, idx * 20);
+        });
+    }
+
+    // PRESIONAR LOGO: REGRESAR AL INICIO Y RESTAURAR HERO
+    if (logoBtn) {
+        logoBtn.addEventListener('click', () => {
+            reproducirAnimacionLogo();
+            
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+
+            document.body.classList.remove('scrolled-mode');
+            if (navbar) navbar.classList.remove('scrolled');
+        });
+    }
+
+    // CAÍDA INICIAL DEL LOGO Y TEXTO GLITCH (1.2s)
     setTimeout(() => {
         if (logoBtn) {
             logoBtn.classList.remove('animate__animated', 'animate__backInDown');
         }
 
-        reproducirAnimacionLogo();
+        document.querySelectorAll('.system-tag, .sub-code, .glitch-title').forEach(el => {
+            el.classList.add('visible');
+        });
+
         iniciarSecuenciaTexto();
+        reproducirAnimacionLogo();
     }, 1200);
 
-    // 4. REPETIR AL HACER CLIC EN EL LOGO
-    if (logoBtn) {
-        logoBtn.addEventListener('click', () => {
-            reproducirAnimacionLogo();
-        });
-    }
+    // ACTIVACIÓN DE MODO SCROLLED
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 80) {
+            document.body.classList.add('scrolled-mode');
+            if (navbar) navbar.classList.add('scrolled');
+        }
+    });
 });

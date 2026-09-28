@@ -3,42 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ingeniería de Sistemas - Uniamazonia</title>
-    
-    <!-- Favicon -->
-    <link rel="icon" href="img/Logo-img.png" type="image/png">
-    
-    <!-- Fuente Fira Code -->
+    <title>Programa de Ingeniería de Sistemas - Uniamazonia</title>
+
+    <link rel="icon" type="image/png" href="img/Logo-img.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Animate.css -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-
-    <!-- Estilos locales -->
     <link rel="stylesheet" href="CSS/styles.css">
 </head>
 <body>
 
-    <main class="hero-container">
-        
-        <!-- Texto encima del logo -->
-        <div id="textWrapper" class="text-wrapper hidden">
-            <span class="system-tag">&lt;system.init&gt;</span>
-            <h1 id="glitchTitle" class="glitch-title">Programa de Ingeniería de Sistemas</h1>
-            <p class="sub-code">// Universidad de la Amazonia</p>
+    <!-- NAVBAR FIJA SUPERIOR -->
+    <nav id="navbar" class="main-nav">
+        <div class="nav-container">
+            <span class="nav-static-title">Programa de Ingeniería de Sistemas</span>
+            
+            <div class="nav-right-group">
+                <div class="nav-buttons">
+                    <button class="nav-btn" id="btnMisionVision">Misión y Visión</button>
+                    <button class="nav-btn btn-highlight" id="btnContacto">Contacto</button>
+                </div>
+                
+                <div id="logoNavTarget" class="logo-nav-target"></div>
+            </div>
         </div>
+    </nav>
 
-        <!-- Botón circular del logo -->
-        <button id="logoBtn" class="btn-logo animate__animated animate__backInDown" type="button" title="¡Haz clic para interactuar!">
-            <video id="logoVideo" muted playsinline preload="auto">
-                <source src="img/Logo-gif.mp4" type="video/mp4">
-                Tu navegador no soporta video HTML5.
-            </video>
+    <!-- SECCIÓN HERO -->
+    <header id="heroSection" class="hero-section">
+        <div class="hero-content">
+            <div class="system-tag">// Universidad de la Amazonia</div>
+            
+            <div class="hero-title-container">
+                <h1 class="glitch-title" id="glitchTitle">&nbsp;</h1>
+            </div>
+            
+            <div class="sub-code">&lt;Facultad de Ingeniería&gt;</div>
+            
+            <!-- Espacio reservado para el layout -->
+            <div class="logo-space-holder"></div>
+        </div>
+    </header>
+
+    <!-- LOGO ANIMADO QUE VIAJA -->
+    <div class="logo-wrapper" id="logoWrapper">
+        <button id="logoBtn" class="btn-logo animate__animated animate__backInDown">
+            <video id="logoVideo" src="img/Logo-gif.mp4" muted playsinline></video>
         </button>
+    </div>
 
-    </main>
+    <!-- SECCIÓN CARRUSEL -->
+    <section id="carouselSection" class="carousel-section">
+        <div class="carousel-container" id="carouselContainer">
+            <div class="carousel-card">
+                <div class="card-placeholder">
+                    <span class="placeholder-icon">📸</span>
+                    <p>Imagen / Proyecto 1</p>
+                </div>
+            </div>
+            <div class="carousel-card">
+                <div class="card-placeholder">
+                    <span class="placeholder-icon">📸</span>
+                    <p>Imagen / Proyecto 2</p>
+                </div>
+            </div>
+            <div class="carousel-card">
+                <div class="card-placeholder">
+                    <span class="placeholder-icon">📸</span>
+                    <p>Imagen / Proyecto 3</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <script src="JS/main.js"></script>
 </body>

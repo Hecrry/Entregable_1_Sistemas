@@ -1,109 +1,221 @@
-/* RESET GENERAL */
+/* RESET GENERAL Y FUENTES */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     font-family: 'Fira Code', monospace;
     background-color: #0b0e14;
+    color: #00ff88;
+    overflow-x: hidden;
+    overflow-y: auto;
     min-height: 100vh;
+    
+    background-image: 
+        radial-gradient(circle at center, transparent 20%, #0b0e14 85%),
+        linear-gradient(rgba(0, 255, 136, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 255, 136, 0.03) 1px, transparent 1px);
+    background-size: 100% 100%, 40px 40px, 40px 40px;
+}
+
+/* SECCIÓN HERO */
+.hero-section {
+    width: 100%;
+    height: 80vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    color: #00ff88;
-    overflow: hidden;
+    padding: 2rem 1rem;
+    position: relative;
+    transition: opacity 0.5s ease;
 }
 
-.hero-container {
+.hero-content {
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
     gap: 20px;
+    max-width: 1200px;
+    width: 100%;
 }
 
-.text-wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-    opacity: 1;
-    transition: opacity 0.3s ease-in-out;
-}
-
-.text-wrapper.hidden {
-    opacity: 0;
-    pointer-events: none;
+.system-tag,
+.sub-code,
+.glitch-title {
+    transition: opacity 0.4s ease;
 }
 
 .system-tag {
-    font-size: 0.85rem;
+    font-size: 1.2rem;
     color: #64748b;
-    letter-spacing: 2px;
+    letter-spacing: 3px;
+}
+
+.sub-code {
+    font-size: 1.35rem;
+    color: #00ff88;
+}
+
+.hero-title-container {
+    min-height: 4.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
 }
 
 .glitch-title {
-    font-size: 3.5rem;
+    font-size: 3.8rem;
     font-weight: 700;
     letter-spacing: -0.5px;
     display: inline-block;
+    white-space: nowrap;
+    min-height: 4.5rem;
+    line-height: 1.2;
 }
 
-/* ESTADO BASE DE CADA LETRA */
+body.scrolled-mode .hero-section {
+    opacity: 0;
+    pointer-events: none;
+    height: 20vh;
+}
+
+/* CARACTERES GLITCH */
 .glitch-char {
     display: inline-block;
     color: #ffffff;
-    text-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
-    opacity: 0;
-}
-
-
-
-/* PARPADEO BRUSCO MIENTRAS SE CONGELA EN BLANCO */
-.glitch-char.flickering {
-    animation: harshFlicker 0.15s steps(1) infinite alternate;
-}
-
-/* LETRA ESTABLECIDA EN BLANCO EN ESPERA DEL RAYO */
-.glitch-char.fixed {
-    animation: none;
-    opacity: 1;
-    color: #ffffff;
     text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+    opacity: 1;
+    white-space: pre;
 }
 
-/* COLOR VERDE DEFINITIVO TRAS EL PASO DEL RAYO */
 .glitch-char.green-final {
     color: #00ff88 !important;
     text-shadow: 0 0 14px rgba(0, 255, 136, 0.9) !important;
-    transition: color 0.2s ease, text-shadow 0.2s ease, transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), margin 0.25s ease;
+    transition: color 0.2s ease, text-shadow 0.2s ease, transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     cursor: default;
-    display: inline-block;
-    margin: 0 1px; /* Margen base */
 }
 
-/* EFECTO AL PASAR EL CURSOR SOBRE CADA LETRA: Vuelve a blanco resplandeciente */
 .glitch-char.green-final:hover {
     color: #ffffff !important;
     text-shadow: 0 0 18px #ffffff, 0 0 30px #00ff88 !important;
-    transform: translateY(-4px) scale(1.35) !important; /* Se agranda un poco más */
-    margin: 0 6px; /* Empuja suavemente a las letras contiguas hacia los lados */
+    transform: translateY(-4px) scale(1.35) !important;
 }
 
-/* ANIMACIÓN DEL BARRIDO DE LUZ */
 .glitch-char.sweep-light {
     animation: letterRay 0.25s ease-in-out forwards !important;
 }
 
-.sub-code {
-    font-size: 0.95rem;
-    color: #00ff88;
-    opacity: 0.8;
+/* NAVBAR SUPERIOR */
+.main-nav {
+    position: fixed;
+    top: -90px;
+    left: 0;
+    width: 100%;
+    height: 85px;
+    background: rgba(15, 23, 42, 0.95);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(0, 255, 136, 0.25);
+    z-index: 1000;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    transition: top 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* BOTÓN CIRCULAR */
+.main-nav.scrolled {
+    top: 0;
+}
+
+.nav-container {
+    max-width: 1350px;
+    margin: 0 auto;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 2.5rem;
+}
+
+.nav-static-title {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: #00ff88;
+    text-shadow: 0 0 12px rgba(0, 255, 136, 0.5);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.main-nav.scrolled .nav-static-title {
+    opacity: 1;
+}
+
+.nav-right-group {
+    display: flex;
+    align-items: center;
+    gap: 1.8rem;
+}
+
+.nav-buttons {
+    display: flex;
+    gap: 1.2rem;
+}
+
+.nav-btn {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: #e2e8f0;
+    padding: 0.7rem 1.6rem;
+    font-family: 'Fira Code', monospace;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.nav-btn:hover {
+    border-color: #00ff88;
+    color: #00ff88;
+    box-shadow: 0 0 16px rgba(0, 255, 136, 0.4);
+    transform: translateY(-2px);
+}
+
+.nav-btn.btn-highlight {
+    background: rgba(0, 255, 136, 0.12);
+    border-color: #00ff88;
+    color: #00ff88;
+}
+
+.logo-nav-target {
+    width: 54px;
+    height: 54px;
+    flex-shrink: 0;
+    visibility: hidden;
+}
+
+/* ESPACIO RESERVADO PARA EL LOGO */
+.logo-space-holder {
+    width: 280px;
+    height: 280px;
+    margin-top: 1.5rem;
+}
+
+/* EL LOGO QUE ENCOGE Y VIAJA HASTA EL NAV */
+.logo-wrapper {
+    position: fixed;
+    top: calc(50vh + 110px);
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1002;
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
 .btn-logo {
     width: 280px;
     height: 280px;
@@ -118,53 +230,102 @@ body {
     justify-content: center;
     align-items: center;
     box-shadow: 0 12px 35px rgba(0, 0, 0, 0.8);
-    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), border-color 0.3s ease, box-shadow 0.3s ease;
-    --animate-duration: 1.2s;
-    
-    /* CURVA CON REBOTE AL VENIR HACIA EL FRENTE */
-    animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .btn-logo video {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    display: block;
     border-radius: 50%;
-    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* EFECTO AL PASAR EL PUNTERO SOBRE EL LOGO */
 .btn-logo:hover {
-    transform: scale(1.08); /* Se agranda de forma suave */
     border-color: #00ff88;
-    box-shadow: 0 0 35px rgba(0, 255, 136, 0.6);
+    box-shadow: 0 0 25px rgba(0, 255, 136, 0.6);
 }
 
-.btn-logo:active {
-    transform: scale(0.95);
+/* TRANSICIÓN: VIAJE Y ENCOGIMIENTO PERFECTO AL NAV SUPERIOR DERECHO */
+body.scrolled-mode .logo-wrapper {
+    top: 42.5px;
+    left: calc(100vw - 3.0rem - 27px);
+    transform: translate(-50%, -50%);
 }
 
-/* KEYFRAMES */
-@keyframes harshFlicker {
-    0% { opacity: 0; }
-    50% { opacity: 1; }
-    100% { opacity: 0; }
+body.scrolled-mode .btn-logo {
+    width: 54px;
+    height: 54px;
+    border-width: 2px;
+}
+
+/* SECCIÓN CARRUSEL */
+.carousel-section {
+    padding: 2rem 2rem 5rem 2rem;
+    min-height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.carousel-container {
+    display: flex;
+    gap: 2.5rem;
+    max-width: 1300px;
+    width: 100%;
+    justify-content: center;
+    opacity: 0;
+    transform: translateY(60px);
+    transition: opacity 0.6s ease-out, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+body.scrolled-mode .carousel-container {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.carousel-card {
+    flex: 1;
+    min-width: 320px;
+    height: 440px;
+    background: #0f172a;
+    border: 1px solid rgba(0, 255, 136, 0.2);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.carousel-card:hover {
+    border-color: #00ff88;
+    transform: translateY(-8px);
+    box-shadow: 0 12px 35px rgba(0, 255, 136, 0.25);
+}
+
+.card-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: repeating-linear-gradient(
+        45deg,
+        #0f172a,
+        #0f172a 12px,
+        #1e293b 12px,
+        #1e293b 24px
+    );
+    color: #94a3b8;
+    font-size: 1.1rem;
+}
+
+.placeholder-icon {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
 }
 
 @keyframes letterRay {
-    0% {
-        transform: scale(1);
-        filter: brightness(1);
-    }
-    50% {
-        transform: scale(1.3);
-        filter: brightness(3);
-        color: #ffffff;
-        text-shadow: 0 0 20px #ffffff;
-    }
-    100% {
-        transform: scale(1);
-        filter: brightness(1);
-    }
+    0% { transform: scale(1); filter: brightness(1); }
+    50% { transform: scale(1.3); filter: brightness(3); color: #ffffff; text-shadow: 0 0 20px #ffffff; }
+    100% { transform: scale(1); filter: brightness(1); }
 }
